@@ -478,18 +478,85 @@ const DEFAULT_SECTIONS = [
 ];
 
 const MOTIVATION = [
-  "You moved from India to LA for a USC master's. That wasn't easy. This prep isn't either — but you've already proven you do hard things.",
-  "3 years of real production experience. You've deployed FDA-regulated software. Most candidates interviewing alongside you haven't shipped anything real.",
-  "Your Jubilant app replaced actual spreadsheets for real people. That's software engineering. The interview is just talking about what you already know how to do.",
-  "You built a HIPAA-compliant EHR system from scratch. You understand security, compliance, and production. That's rare at your level.",
-  "Every concept that feels unfamiliar right now is just vocabulary you haven't attached to things you already do. You know this stuff. You just need the words.",
-  "The offer you're working toward will pay for years of your life. A few months of focused prep is the highest ROI work you'll ever do.",
-  "You're not starting from zero. You're a working engineer learning to articulate what you already know. That's a very different, much easier problem.",
-  "USC MS CS, 3+ years experience, AWS certified, full-stack AND AI experience. Your resume opens doors. Your prep is what walks through them.",
-  "LeaveNow is a real distributed system with circuit breakers and Redis caching. Most people who interview at FAANG have never built anything that complex.",
-  "The difference between you and the person who gets the offer isn't intelligence or experience. It's preparation. You're doing the work. Keep going.",
-  "Feeling overwhelmed by the list? That means you're being honest with yourself about what you need to learn. That's the first step. Most people skip it.",
-  "Every Google, Meta, and Stripe engineer felt exactly like you do right now before they got their offer. The prep feels impossible until the day it doesn't.",
+  "The only way to do great work is to love what you do. — Steve Jobs",
+
+  "First, solve the problem. Then, write the code. — John Johnson",
+
+  "Talk is cheap. Show me the code. — Linus Torvalds",
+
+  "Programs must be written for people to read, and only incidentally for machines to execute. — Harold Abelson",
+
+  "The best way to predict the future is to invent it. — Alan Kay",
+
+  "Simplicity is the soul of efficiency. — Austin Freeman",
+
+  "It always seems impossible until it's done. — Nelson Mandela",
+
+  "Success is the sum of small efforts repeated day in and day out. — Robert Collier",
+
+  "You don’t rise to the level of your goals. You fall to the level of your systems. — James Clear",
+
+  "Discipline equals freedom. — Jocko Willink",
+
+  "Hard things build strong engineers. Strong engineers build great systems.",
+
+  "Every problem you solve today becomes intuition tomorrow.",
+
+  "The interview isn't judging your worth. It's measuring your preparation.",
+
+  "One problem at a time. That's how every great engineer works.",
+
+  "You're not trying to be perfect. You're trying to get better today.",
+
+  "The version of you with the offer just kept going when it was uncomfortable.",
+
+  "Thousands of engineers have passed these interviews. The difference is consistency.",
+
+  "The gap between you and the offer is just reps.",
+
+  "You moved across the world to build a better life. This is part of that story.",
+
+  "Future you is already thankful you didn't quit today.",
+
+  "Talk is cheap. Show me the code. — Linus Torvalds",
+
+  "Premature optimization is the root of all evil. — Donald Knuth",
+
+  "Programs must be written for people to read, and only incidentally for machines to execute. — Harold Abelson",
+
+  "The best way to predict the future is to invent it. — Alan Kay",
+
+  "Any sufficiently advanced technology is indistinguishable from magic. — Arthur C. Clarke",
+
+  "Simplicity is prerequisite for reliability. — Edsger Dijkstra",
+
+  "The most dangerous phrase in the language is: 'We've always done it this way.' — Grace Hopper",
+
+  "The function of good software is to make the complex appear simple. — Grady Booch",
+
+  "Good programmers know what to write. Great ones know what to rewrite. — Eric S. Raymond",
+
+  "Controlling complexity is the essence of computer programming. — Brian Kernighan",
+
+  "Before software can be reusable it first has to be usable. — Ralph Johnson",
+
+  "One of my most productive days was throwing away 1000 lines of code. — Ken Thompson",
+
+  "If debugging is the process of removing bugs, then programming must be the process of putting them in. — Edsger Dijkstra",
+
+  "Sometimes it pays to stay in bed on Monday rather than spending the rest of the week debugging Monday's code. — Dan Salomon",
+
+  "A good programmer is someone who always looks both ways before crossing a one-way street. — Doug Linder",
+
+  "The most important property of a program is whether it accomplishes the intention of its user. — C.A.R. Hoare",
+
+  "Experience is the name everyone gives to their mistakes. — Oscar Wilde",
+
+  "The only way to learn a new programming language is by writing programs in it. — Dennis Ritchie",
+
+  "You don't understand something until you implement it. — Bjarne Stroustrup",
+
+  "The best error message is the one that never shows up. — Thomas Fuchs"
 ];
 
 // ─── STORAGE KEYS ─────────────────────────────────────────────────────────────
@@ -537,6 +604,8 @@ export default function App() {
   const [view, setView]               = useState("topics");
   const [searchQuery, setSearchQuery] = useState("");
   const timerRef = useRef(null);
+  const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
+  const [motivationQuote, setMotivationQuote] = useState(null);
 
   // ── STORAGE LOAD ───────────────────────────────────────────────────────────
   useEffect(() => {
@@ -589,7 +658,10 @@ export default function App() {
   const toggleTask  = (id) => setTasks(p => p.map(t => t.id===id ? {...t, done:!t.done} : t));
   const deleteTask  = (id) => setTasks(p => p.filter(t => t.id !== id));
   const saveNote    = (k, v) => setNotes(p => ({ ...p, [k]: v }));
-  const showMotiv   = () => { setMotivation(MOTIVATION[Math.floor(Math.random()*MOTIVATION.length)]); setShowMotivation(true); };
+function showMotiv(){
+  const quote = MOTIVATION[Math.floor(Math.random()*MOTIVATION.length)];
+  setMotivationQuote(quote);
+}
 
   const exportBackup = () => {
     const payload = {
@@ -797,7 +869,7 @@ export default function App() {
       {lbl}
     </button>
   ))}
-  <button className="mood-btn" onClick={showMotiv}>No Mood? 😮</button>
+  <button className="mood-btn" onClick={showMotiv}>Wanna Quit? </button>
 </nav>
       </header>
 
@@ -817,12 +889,19 @@ export default function App() {
         </div>
       )}
 
-      <div className="body">
+<div className={`body${sidebarCollapsed ? " sidebar-collapsed" : ""}`}>
 
         {/* ── SIDEBAR ── */}
         <aside className="sidebar">
-          <div className="sidebar-inner">
-            {sections.map(sec => {
+        <button
+  className="sidebar-toggle"
+  onClick={() => setSidebarCollapsed(prev => !prev)}
+  title={sidebarCollapsed ? "Expand sidebar" : "Collapse sidebar"}
+>
+  {sidebarCollapsed ? "→" : "←"}
+</button>
+<div className="sidebar-inner">
+  {!sidebarCollapsed && sections.map(sec => {
               const {done,total,pct} = secProg(sec);
               const active = activeSection===sec.id;
               return (
@@ -844,9 +923,11 @@ export default function App() {
               );
             })}
           </div>
-          <div className="sidebar-footer">
-            <button className="btn-add-section" onClick={()=>setShowAddSection(true)}>+ Add Section</button>
-          </div>
+          {!sidebarCollapsed && (
+  <div className="sidebar-footer">
+    <button className="btn-add-section" onClick={()=>setShowAddSection(true)}>+ Add Section</button>
+  </div>
+)}
         </aside>
 
         {/* ── MAIN CONTENT ── */}
@@ -1238,6 +1319,29 @@ export default function App() {
           </div>
         </div>
       )}
+
+{motivationQuote && (
+  <div className="motiv-overlay">
+    <div className="motiv-modal">
+
+      <div className="motiv-title">
+        Take a breath.
+      </div>
+
+      <div className="motiv-quote">
+        {motivationQuote}
+      </div>
+
+      <button
+        className="motiv-btn"
+        onClick={() => setMotivationQuote(null)}
+      >
+        Back to Work
+      </button>
+
+    </div>
+  </div>
+)}
 
     </div>
   );

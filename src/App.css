@@ -626,6 +626,82 @@
   font-weight: 800;
 }
 
+.sidebar {
+  position: relative;
+  transition: width 0.25s ease;
+}
+
+.sidebar-toggle {
+  width: 36px;
+  height: 36px;
+  border: 1px solid #30363d;
+  background: #161b22;
+  color: #e6edf3;
+  border-radius: 8px;
+  cursor: pointer;
+  margin: 12px;
+}
+
+.sidebar-toggle:hover {
+  background: #21262d;
+}
+
+.body.sidebar-collapsed .sidebar {
+  width: 64px;
+  min-width: 64px;
+}
+
+.body.sidebar-collapsed .content {
+  width: calc(100% - 64px);
+}
+
+.motiv-overlay{
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,0.65);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  z-index:999;
+}
+
+.motiv-modal{
+  background:#0f172a;
+  border:1px solid #334155;
+  padding:40px;
+  border-radius:14px;
+  max-width:500px;
+  text-align:center;
+  box-shadow:0 20px 40px rgba(0,0,0,0.6);
+}
+
+.motiv-title{
+  font-size:18px;
+  color:#94a3b8;
+  margin-bottom:16px;
+}
+
+.motiv-quote{
+  font-size:20px;
+  line-height:1.5;
+  color:white;
+  margin-bottom:30px;
+}
+
+.motiv-btn{
+  background:#2563eb;
+  color:white;
+  border:none;
+  padding:12px 24px;
+  border-radius:8px;
+  cursor:pointer;
+  font-weight:600;
+}
+
+.motiv-btn:hover{
+  background:#1d4ed8;
+}
+
 @media (max-width: 1100px) {
   .stats-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
